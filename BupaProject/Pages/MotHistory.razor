@@ -1,0 +1,106 @@
+﻿@page "/"
+@using BupaProject.Data
+@using BupaProject.Services
+@inject VehicleDataCheckService VehicleDataCheckService
+@inject NavigationManager NavigationManager
+
+<h3>MOT Test History for @registration</h3>
+
+<input @bind="registration" placeholder="Enter Registration" />
+<button @onclick="FetchMotHistory">Get MOT History</button>
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <p style="color:red">@errorMessage</p>
+}
+@if (vehicleMotHistory != null && vehicleMotHistory.Count > 0)
+{
+    <h4>@vehicleMotHistory[0].Make @vehicleMotHistory[0].Model</h4>
+    <ul>
+
+        <li>
+            <strong>Make:</strong> @vehicleMotHistory[0].Make<br />
+            <strong>Model:</strong> @vehicleMotHistory[0].Model<br />
+            <strong>Color:</strong> @vehicleMotHistory[0].primaryColour<br />
+            <strong>MOT Expiry Date:</strong> @vehicleMotHistory[0].MOTExpiryDate<br />
+            <strong>Mileage at last MOT:</strong> @vehicleMotHistory[0].MileageAtLastMOT<br />
+
+        </li>
+        }
+    </ul>
+}
+
+@code {
+    private string? registration;
+    private List<VehicleMotHistory> vehicleMotHistory;
+    private string? errorMessage;
+    private bool shouldRefresh;
+
+    private async Task FetchMotHistory()
+    {
+        // Clear previous error message
+        errorMessage = null;
+
+        // Check if the registration input is empty
+        if (string.IsNullOrWhiteSpace(registration))
+        {
+            errorMessage = "Registration cannot be empty. Please enter a valid registration.";
+            return;
+        }
+
+        vehicleMotHistory = await VehicleDataCheckService.GetMotTestHistoryAsync(registration);
+
+        var motTests = vehicleMotHistory[0].motTests;
+
+        vehicleMotHistory[0].MOTExpiryDate = GetLatestExpiryDate(motTests);
+
+        vehicleMotHistory[0].MileageAtLastMOT = GetHighestOdometerValue(motTests);
+
+        shouldRefresh = true;
+        StateHasChanged();
+    }
+
+    public static DateTime GetLatestExpiryDate(List<MotTest> motTests)
+    {
+        DateTime latestDate = DateTime.MinValue;
+
+        foreach (var test in motTests)
+        {
+            if (DateTime.TryParse(test.expiryDate, out DateTime expiryDate))
+            {
+                if (expiryDate > latestDate)
+                {
+                    latestDate = expiryDate;
+                }
+            }
+        }
+
+        return latestDate;
+    }
+
+    public static int GetHighestOdometerValue(List<MotTest> motTests)
+    {
+        int highestOdometer = 0;
+
+        foreach (var test in motTests)
+        {
+            if (int.TryParse(test.odometerValue, out int odometerValue))
+            {
+                if (odometerValue > highestOdometer)
+                {
+                    highestOdometer = odometerValue;
+                }
+            }
+        }
+
+        return highestOdometer;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (shouldRefresh)
+        {
+            shouldRefresh = false;
+            StateHasChanged();
+        }
+    }
+}

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35004.147
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BupaProject", "BupaProject\BupaProject.csproj", "{AE54713A-7C5C-44A2-ACA8-9263233E329B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BupaProject-Test", "BupaProject-Test\BupaProject-Test.csproj", "{3DEE8AAC-A93D-4DE9-A801-ECB84994F99A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AE54713A-7C5C-44A2-ACA8-9263233E329B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE54713A-7C5C-44A2-ACA8-9263233E329B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE54713A-7C5C-44A2-ACA8-9263233E329B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE54713A-7C5C-44A2-ACA8-9263233E329B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DEE8AAC-A93D-4DE9-A801-ECB84994F99A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DEE8AAC-A93D-4DE9-A801-ECB84994F99A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DEE8AAC-A93D-4DE9-A801-ECB84994F99A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DEE8AAC-A93D-4DE9-A801-ECB84994F99A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2F843137-49BB-489D-B7EA-28C5F5B70D54}
+	EndGlobalSection
+EndGlobal
