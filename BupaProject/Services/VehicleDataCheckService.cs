@@ -1,4 +1,5 @@
 ﻿using BupaProject.Data;
+using Serilog;
 
 namespace BupaProject.Services
 {
@@ -28,6 +29,8 @@ namespace BupaProject.Services
             }
             catch (Exception ex)
             {
+                Log.Error(ex, "An error occurred while fetching MOT history for registration: {Registration}", registration);
+
                 return new List<VehicleMotHistory>();
             }
         }
