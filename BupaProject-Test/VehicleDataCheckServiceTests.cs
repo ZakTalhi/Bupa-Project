@@ -13,7 +13,7 @@ namespace BupaProject.Test
         public async Task GetMotTestHistoryAsync_ValidRegistration_ReturnsMotHistory()
         {
             // Arrange
-            var httpClient = new HttpClient(); // You may need to configure HttpClient for testing
+            var httpClient = new HttpClient(); 
             var service = new VehicleDataCheckService(httpClient);
             var registration = "FY10DZA";
 
@@ -22,7 +22,7 @@ namespace BupaProject.Test
 
             // Assert
             Assert.NotNull(motHistory);
-            // Add more specific assertions based on the expected behavior
+            
         }
     }
 }
