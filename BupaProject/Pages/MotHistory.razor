@@ -4,30 +4,30 @@
 @inject VehicleDataCheckService VehicleDataCheckService
 @inject NavigationManager NavigationManager
 
-<h3>MOT Test History for @registration</h3>
-
-<input @bind="registration" placeholder="Enter Registration" />
-<button @onclick="FetchMotHistory">Get MOT History</button>
-@if (!string.IsNullOrEmpty(errorMessage))
-{
-    <p style="color:red">@errorMessage</p>
-}
-@if (vehicleMotHistory != null && vehicleMotHistory.Count > 0)
-{
-    <h4>@vehicleMotHistory[0].Make @vehicleMotHistory[0].Model</h4>
-    <ul>
-
-        <li>
-            <strong>Make:</strong> @vehicleMotHistory[0].Make<br />
-            <strong>Model:</strong> @vehicleMotHistory[0].Model<br />
-            <strong>Color:</strong> @vehicleMotHistory[0].primaryColour<br />
-            <strong>MOT Expiry Date:</strong> @vehicleMotHistory[0].MOTExpiryDate<br />
-            <strong>Mileage at last MOT:</strong> @vehicleMotHistory[0].MileageAtLastMOT<br />
-
-        </li>
-        }
-    </ul>
-}
+<div class="content-container">
+    <div class="input-container">
+        <input class="registration-input" @bind="registration" placeholder="Enter Registration" />
+        <button class="fetch-button" @onclick="FetchMotHistory">Get MOT History</button>
+    </div>
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <p style="color:red">@errorMessage</p>
+    }
+    @if (vehicleMotHistory != null && vehicleMotHistory.Count > 0)
+    {
+        <div class="vehicle-info-container">
+            <ul class="vehicle-info">
+                <li>
+                    <strong>Make:</strong> @vehicleMotHistory[0].Make<br />
+                    <strong>Model:</strong> @vehicleMotHistory[0].Model<br />
+                    <strong>Color:</strong> @vehicleMotHistory[0].primaryColour<br />
+                    <strong>MOT Expiry Date:</strong> @vehicleMotHistory[0].MOTExpiryDate.ToString("yyyy-MM-dd")<br />
+                    <strong>Mileage at last MOT:</strong> @vehicleMotHistory[0].MileageAtLastMOT<br />
+                </li>
+            </ul>
+        </div>
+    }
+</div>
 
 @code {
     private string? registration;

@@ -18,7 +18,7 @@ namespace BupaProject.Services
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    client.DefaultRequestHeaders.Add("x-api-key", "Place you API key here");
+                    client.DefaultRequestHeaders.Add("x-api-key", "place you api key here");
                     var url = $"https://beta.check-mot.service.gov.uk/trade/vehicles/mot-tests?registration={registration}";
                     var response = await client.GetAsync(url);
 
