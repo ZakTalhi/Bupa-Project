@@ -13,16 +13,16 @@
     {
         <p style="color:red">@errorMessage</p>
     }
-    @if (vehicleMotHistory != null && vehicleMotHistory.Count > 0)
+    @if (vehicleMotHistory != null)
     {
         <div class="vehicle-info-container">
             <ul class="vehicle-info">
                 <li>
-                    <strong>Make:</strong> @vehicleMotHistory[0].Make<br />
-                    <strong>Model:</strong> @vehicleMotHistory[0].Model<br />
-                    <strong>Color:</strong> @vehicleMotHistory[0].primaryColour<br />
-                    <strong>MOT Expiry Date:</strong> @vehicleMotHistory[0].MOTExpiryDate.ToString("yyyy-MM-dd")<br />
-                    <strong>Mileage at last MOT:</strong> @vehicleMotHistory[0].MileageAtLastMOT<br />
+                    <strong>Make:</strong> @vehicleMotHistory.Make<br />
+                    <strong>Model:</strong> @vehicleMotHistory.Model<br />
+                    <strong>Color:</strong> @vehicleMotHistory.PrimaryColour<br />
+                    <strong>MOT Expiry Date:</strong> @vehicleMotHistory.MotTests.Max(o=>o.ExpiryDate)<br />
+                    <strong>Mileage at last MOT:</strong> @vehicleMotHistory.MotTests.Max(o=>o.OdometerValue)<br />
                 </li>
             </ul>
         </div>
@@ -31,7 +31,7 @@
 
 @code {
     private string? registration;
-    private List<VehicleMotHistory> vehicleMotHistory;
+    private VehicleMotHistory? vehicleMotHistory;
     private string? errorMessage;
     private bool shouldRefresh;
 
@@ -49,51 +49,20 @@
 
         vehicleMotHistory = await VehicleDataCheckService.GetMotTestHistoryAsync(registration);
 
-        var motTests = vehicleMotHistory[0].motTests;
-
-        vehicleMotHistory[0].MOTExpiryDate = GetLatestExpiryDate(motTests);
-
-        vehicleMotHistory[0].MileageAtLastMOT = GetHighestOdometerValue(motTests);
+        if (vehicleMotHistory == null)
+        {
+            errorMessage = "Registration not found. Please enter a valid registration.";
+            return;
+        }
+        else
+        {
+            
+            var motTests = vehicleMotHistory.MotTests;            
+        }        
 
         shouldRefresh = true;
         StateHasChanged();
-    }
-
-    public static DateTime GetLatestExpiryDate(List<MotTest> motTests)
-    {
-        DateTime latestDate = DateTime.MinValue;
-
-        foreach (var test in motTests)
-        {
-            if (DateTime.TryParse(test.expiryDate, out DateTime expiryDate))
-            {
-                if (expiryDate > latestDate)
-                {
-                    latestDate = expiryDate;
-                }
-            }
-        }
-
-        return latestDate;
-    }
-
-    public static int GetHighestOdometerValue(List<MotTest> motTests)
-    {
-        int highestOdometer = 0;
-
-        foreach (var test in motTests)
-        {
-            if (int.TryParse(test.odometerValue, out int odometerValue))
-            {
-                if (odometerValue > highestOdometer)
-                {
-                    highestOdometer = odometerValue;
-                }
-            }
-        }
-
-        return highestOdometer;
-    }
+    }    
 
     protected override void OnAfterRender(bool firstRender)
     {
